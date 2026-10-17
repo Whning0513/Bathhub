@@ -344,7 +344,12 @@ pauseButton.addEventListener('click', () => {
   pauseButton.textContent = state.paused ? '▶' : 'Ⅱ';
   pauseButton.setAttribute('aria-label', state.paused ? '继续模拟' : '暂停模拟');
 });
-document.querySelector('#reset').addEventListener('click', () => waveField.reset());
+document.querySelector('#reset').addEventListener('click', () => {
+  waveField.reset();
+  updateWater();
+  updateHeatmap();
+  waveReadout.textContent = `${waveField.peak().toFixed(3)} m`;
+});
 
 const views = {
   overview: { position: new THREE.Vector3(2.15, 1.55, 2.35), target: new THREE.Vector3(0, -0.12, 0) },
