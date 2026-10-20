@@ -173,7 +173,7 @@ def rear_reef_mesh(nx: int = 61, ny: int = 31) -> Mesh:
     mesh = Mesh()
     for j in range(ny - 1):
         for i in range(nx - 1):
-            mesh.quad(top[j][i], top[j + 1][i], top[j + 1][i + 1], top[j][i + 1])
+            mesh.quad(top[j][i], top[j][i + 1], top[j + 1][i + 1], top[j + 1][i])
 
     bottom_z = -1.0
     perimeter = (
@@ -187,8 +187,10 @@ def rear_reef_mesh(nx: int = 61, ny: int = 31) -> Mesh:
         lower = (upper[0], upper[1], bottom_z)
         lower_next = (upper_next[0], upper_next[1], bottom_z)
         mesh.quad(upper, lower, lower_next, upper_next)
-    mesh.quad((-0.60, -1.0, bottom_z), (-0.60, -0.5, bottom_z),
-              (0.60, -0.5, bottom_z), (0.60, -1.0, bottom_z))
+    bottom = [[(point[0], point[1], bottom_z) for point in row] for row in top]
+    for j in range(ny - 1):
+        for i in range(nx - 1):
+            mesh.quad(bottom[j][i], bottom[j + 1][i], bottom[j + 1][i + 1], bottom[j][i + 1])
     return mesh
 
 

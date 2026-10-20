@@ -3,6 +3,7 @@ import math
 import sys
 import unittest
 import xml.etree.ElementTree as ET
+from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -74,6 +75,18 @@ class DualSphysicsCaseTests(unittest.TestCase):
                     MODULE.sub(triangle[2], triangle[0]),
                 )
                 self.assertGreater(math.sqrt(MODULE.dot(area_vector, area_vector)), 1e-12, name)
+
+    def test_rear_reef_stl_is_closed_and_consistently_oriented(self):
+        mesh = MODULE.rear_reef_mesh()
+        edge_directions = defaultdict(list)
+        for triangle in mesh.triangles:
+            for start, end in zip(triangle, triangle[1:] + triangle[:1]):
+                edge = tuple(sorted((start, end)))
+                edge_directions[edge].append(1 if start < end else -1)
+
+        for edge, directions in edge_directions.items():
+            self.assertEqual(len(directions), 2, f"open or non-manifold edge: {edge}")
+            self.assertEqual(sum(directions), 0, f"inconsistent edge winding: {edge}")
 
 
 if __name__ == "__main__":
