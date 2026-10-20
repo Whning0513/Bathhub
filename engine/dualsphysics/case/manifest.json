@@ -16,7 +16,7 @@
   "triangle_counts": {
     "leg_reef_west.stl": 2040,
     "leg_reef_east.stl": 2040,
-    "rear_reef.stl": 3962,
+    "rear_reef.stl": 7560,
     "annular_actuator.stl": 576
   },
   "actuator_boundary_samples": 600
